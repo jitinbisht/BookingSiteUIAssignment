@@ -1,0 +1,10 @@
+.sidepanel-container {
+    min-height: 100%;
+    padding: 3px;
+    width: 400px;
+}
+
+.filter-inputs {
+    padding: 10px;
+    padding-top: 15px;
+}
