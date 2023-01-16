@@ -7,7 +7,7 @@ import { Rate } from "antd";
 
 
 const FiltersPanel = (props) => {
-  const [reset, setReset] = React.useState(0); // this we will use for refreshing the MinMaxFilter compoent after resetting the filters
+  const [reset, setReset] = React.useState(0); // this we will use for refreshing the MinMaxFilter component after resetting the filters
   const [applyFilters, setApplyFilters] = React.useState(0); // to be updated when apply filters button gets clicked
   const [reviewsCheckboxObj, setReviewsCheckboxObj] = React.useState({
     five: false,
@@ -37,14 +37,11 @@ const FiltersPanel = (props) => {
     }
 
     if (reviewsCheckboxObj.five) {
-      props.filtersObject.minStars = 5;
-      props.setFiltersObject(props.filtersObject);
+      props.setFiltersObject({...props.filtersObject, minStars: 5});
     } else if (reviewsCheckboxObj.four) {
-      props.filtersObject.minStars = 4;
-      props.setFiltersObject(props.filtersObject);
+      props.setFiltersObject({...props.filtersObject, minStars: 4});
     } else {
-      props.filtersObject.minStars = 0;
-      props.setFiltersObject(props.filtersObject);
+      props.setFiltersObject({...props.filtersObject, minStars: 0});
     }
   };
 
@@ -176,7 +173,7 @@ const FiltersPanel = (props) => {
             handleReviewCheckboxSelect(false, 5);
             handleReviewCheckboxSelect(false, 4);
             handleReviewCheckboxSelect(false, 0);
-            setReset(reset + 1);
+            setReset(reset => reset + 1);
           }}
         />
         <Chip
@@ -185,7 +182,7 @@ const FiltersPanel = (props) => {
           sx={{ padding: 1 }}
           clickable={true}
           onClick={() => {
-            setApplyFilters(applyFilters + 1);
+            setApplyFilters(applyFilters => applyFilters + 1);
             props.setFiltersObject(props.filtersObject);
           }}
         />

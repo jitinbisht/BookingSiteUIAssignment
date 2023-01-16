@@ -4,7 +4,7 @@ import LeftIcon from "@mui/icons-material/ChevronLeft";
 import RightIcon from "@mui/icons-material/ChevronRight";
 
 const CustomPagination = (props) => {
-  let numberOfListings = props.listings.length;
+  const numberOfListings = props.listings.length;
   return (
     <div style={{ paddingTop: 10, paddingLeft: 6, fontSize: 12 }}>
       <Stack direction={"row"} spacing={1}>

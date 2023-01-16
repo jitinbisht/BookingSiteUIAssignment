@@ -16,11 +16,13 @@ const Listing = (props) => {
   };
 
   useEffect(()=>{
+    // To change the count of the particular tab
     updateTabCount(properties)
   },[properties.length])
 
   const handleCheckBoxChange = (e) =>{
     const {name, checked} = e.target;
+    // Handle select All checkbox for selected tab properties
     if(name === 'allSelect'){
       props.setPropertiesBackup(listings.map(listing => ({
         ...listing, isChecked: checked
@@ -46,6 +48,7 @@ const Listing = (props) => {
       </div>
       {listings.map((listing, key) => {
         if (
+          //Display listings based on search input
           props.searchText.length === 0 ||
           listing?.propertyId
             ?.toLowerCase()
@@ -131,6 +134,7 @@ const Listing = (props) => {
           }
         }
       })}
+      {/* Filtered lists for using in Google map file*/}
       {filteredListings.length !== props.filteredProperties.length
         ? props.setFilteredProperties([...filteredListings])
         : null}

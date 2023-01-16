@@ -6,14 +6,12 @@ import React from "react";
 const MinMaxFilter = (props) => {
   const [minValue, setMinValue] = React.useState(props.minValue);
   const [maxValue, setMaxValue] = React.useState(props.maxValue);
-  const [callApplyFilters, setCallApplyFilters] = React.useState(0);
 
   // Refresh the component state after clicking reset button
   React.useEffect(() => {
     setMinValue(props.minValue);
     setMaxValue(props.maxValue);
     props.setSearchText("");
-    setCallApplyFilters(callApplyFilters + 1);
   }, [props.reset]);
 
   React.useEffect(() => {
@@ -35,7 +33,7 @@ const MinMaxFilter = (props) => {
         console.log("No such category title after applying filters!!");
     }
     props.setFiltersObject(filtersObject);
-  }, [props.applyFilters, callApplyFilters]);
+  }, [props.applyFilters]);
 
   return (
     <div style={{ marginTop: 15 }}>
