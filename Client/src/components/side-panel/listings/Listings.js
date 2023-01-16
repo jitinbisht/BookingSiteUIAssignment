@@ -1,19 +1,49 @@
 /* eslint-disable jsx-a11y/alt-text */
+import React, { useEffect } from 'react';
 import { Checkbox, Stack } from "@mui/material";
 import { Rate } from "antd";
 import "./Listings.css";
 
 const Listing = (props) => {
-  let listings = props.listings;
+  const {listings, properties, updateTabCount, setProperties} = props;
+  const SELECT_ALL_PROPERTIES = 'Select all properties';
   let filteredListings = [];
   const REMOVE = 'Remove';
 
-  const removeListing = (key) => {
+  const removeListing = (key, propertyId) => {
     listings.splice(key, 1);
+    setProperties(properties.filter(property => property.propertyId !== propertyId))
   };
 
+  useEffect(()=>{
+    updateTabCount(properties)
+  },[properties.length])
+
+  const handleCheckBoxChange = (e) =>{
+    const {name, checked} = e.target;
+    if(name === 'allSelect'){
+      props.setPropertiesBackup(listings.map(listing => ({
+        ...listing, isChecked: checked
+      })))
+    } else {
+      props.setPropertiesBackup(listings.map((listing) =>
+        listing.propertyId === name ? { ...listing, isChecked: checked } : listing
+      ));
+    }
+  }
   return (
     <div style={{ height: "69vh", overflowY: "scroll", overflowX: "hidden" }}>
+      <div style={{ color: '#787878', marginTop: 10 }}>
+        {' '}
+        <Checkbox
+          sx={{ '& .MuiSvgIcon-root': { fontSize: 17 } }}
+          style={{ marginLeft: 4 }}
+          name='allSelect'
+          checked={!listings.some((listing) => listing?.isChecked !== true)}
+          onChange={handleCheckBoxChange}
+        />
+        <span>{SELECT_ALL_PROPERTIES}</span>
+      </div>
       {listings.map((listing, key) => {
         if (
           props.searchText.length === 0 ||
@@ -38,19 +68,24 @@ const Listing = (props) => {
               <div
                 style={{ padding: 2 }}
                 key={listing.propertyMetadata.headline}
-                onMouseEnter={() => props.setHoveredListing(listing)}
-                onMouseLeave={() => props.setHoveredListing({})}
+                onMouseEnter={() => props.setHoveredProperty(listing)}
+                onMouseLeave={() => props.setHoveredProperty({})}
               >
                 <Stack
                   direction="row"
                   spacing={1}
                   className={
-                    listing.listingNumber === props.selectedListingNumber
+                    listing.propertyId === props.selectedPropertyID
                       ? "selected-listing"
                       : "listing"
                   }
                 >
-                  <Checkbox sx={{ "& .MuiSvgIcon-root": { fontSize: 17 } }} />
+                  <Checkbox 
+                    sx={{ "& .MuiSvgIcon-root": { fontSize: 17 } }} 
+                    checked={listing?.isChecked || false} 
+                    name={listing.propertyId}
+                    onChange={handleCheckBoxChange}
+                    />
                   <img
                     src={listing.images[0].c6_uri}
                     className="listing-image"
@@ -82,7 +117,7 @@ const Listing = (props) => {
                       <span
                         className="remove-label"
                         onClick={() => {
-                          removeListing(key);
+                          removeListing(key, listing.propertyId);
                         }}
                       >
                         {REMOVE}
@@ -96,8 +131,8 @@ const Listing = (props) => {
           }
         }
       })}
-      {filteredListings.length !== props.filteredListings.length
-        ? props.setFilteredListings([...filteredListings])
+      {filteredListings.length !== props.filteredProperties.length
+        ? props.setFilteredProperties([...filteredListings])
         : null}
     </div>
   );

@@ -7,11 +7,11 @@ import getFilteredListings from './services/getFilteredListingsService'
 import { Stack } from '@mui/material'
 
 function App() {
-  const [listings, setListings] = React.useState([])
-  const [listingsBackup, setListingsBackup] = React.useState([])
-  const [filteredListings, setFilteredListings] = React.useState([])
-  const [selectedListingNumber, setSelectedListingNumber] = React.useState(0)
-  const [hoveredListing, setHoveredListing] = React.useState({})
+  const [properties, setProperties] = React.useState([])
+  const [propertiesBackup, setPropertiesBackup] = React.useState([])
+  const [filteredProperties, setFilteredProperties] = React.useState([])
+  const [selectedPropertyID, setSelectedPropertyID] = React.useState('')
+  const [hoveredProperty, setHoveredProperty] = React.useState({})
   const [listCounts, setListCounts] = React.useState([0, 0, 0])
 
   const updateTabCount = (listings) => {
@@ -29,15 +29,15 @@ function App() {
 
   const updateListing = (tabId, listings) => {
     if (tabId === 0) {
-      setListingsBackup(
+      setPropertiesBackup(
         listings.filter((item) => item.propertyType === 'Corporate apartment'),
       )
     } else if (tabId === 2) {
-      setListingsBackup(
+      setPropertiesBackup(
         listings.filter((item) => item.propertyType === 'Studio'),
       )
     } else {
-      setListingsBackup(
+      setPropertiesBackup(
         listings.filter(
           (item) =>
             item.propertyType !== 'Studio' &&
@@ -48,7 +48,7 @@ function App() {
   }
 
   const onTabChange = (tabId) => {
-    updateListing(tabId, listings)
+    updateListing(tabId, properties)
   }
 
   React.useEffect(() => {
@@ -65,40 +65,47 @@ function App() {
           maxBathrooms: null,
           minBathrooms: 0,
         };
-        const respListings = await getFilteredListings(requestParams)
-        setListings(respListings)
-        setListingsBackup(respListings)
-        setFilteredListings(respListings)
-        updateTabCount(respListings)
-        updateListing(0, respListings)
+        console.log('====1=====')
+        const propertiesList = await getFilteredListings(requestParams)
+        setProperties(propertiesList)
+        setPropertiesBackup(propertiesList)
+        setFilteredProperties(propertiesList)
+        updateTabCount(propertiesList)
+        updateListing(0, propertiesList)
       } catch (err) {
         console.log('Error while calling API')
       }
     })()
   }, [])
 
-  const setListingNumber = (number) => {
-    setSelectedListingNumber(number)
+  const setPropertyID = (propertyId) => {
+    /** On hovering the map markers, it checks the property number and
+     *  apply the css on the selected property in the panel */
+    setSelectedPropertyID(propertyId)
   }
 
   return (
     <div style={{ maxHeight: '100%' }}>
       <Stack direction="row" spacing={0.1}>
         <SidePanel
-          listings={listingsBackup}
-          filteredListings={filteredListings}
-          setFilteredListings={(newList) => setFilteredListings(newList)}
+          listings={propertiesBackup}
+          properties={properties}
+          setPropertiesBackup={setPropertiesBackup}
+          filteredProperties={filteredProperties}
+          setFilteredProperties={(newList) => setFilteredProperties(newList)}
           style={{ minWidth: 380, padding: 0 }}
-          selectedListingNumber={selectedListingNumber}
-          setHoveredListing={(listing) => setHoveredListing(listing)}
+          selectedPropertyID={selectedPropertyID}
+          setHoveredProperty={(listing) => setHoveredProperty(listing)}
           onTabChange={onTabChange}
           listCounts={listCounts}
+          updateTabCount={updateTabCount}
+          setProperties={setProperties}
         />
         <Map
-          listings={listingsBackup}
-          filteredListings={filteredListings}
-          setSelectedListingNumber={(n) => setListingNumber(n)}
-          hoveredListing={hoveredListing}
+          listings={propertiesBackup}
+          filteredProperties={filteredProperties}
+          setSelectedPropertyID={(propertyId) => setPropertyID(propertyId)}
+          hoveredProperty={hoveredProperty}
         />
       </Stack>
     </div>

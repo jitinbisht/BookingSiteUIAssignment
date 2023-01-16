@@ -1,11 +1,3 @@
-.sidepanel {
-  width: 600px;
-  background-color: aqua ;
-}
-
-.bg {
-  background-color: blueviolet;
-}
 
 ::-webkit-scrollbar {
   width: 7px;

@@ -1,10 +1,8 @@
 import React from 'react'
-import './TabsContainer.css'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import { Checkbox } from '@mui/material'
 import Listings from '../listings/Listings'
 
 function TabPanel(props) {
@@ -26,9 +24,7 @@ function TabPanel(props) {
   )
 }
 
-
 const TabsContainer = (props) => {
-  const SELECT_ALL_PROPERTIES = 'Select all properties';
   const [value, setValue] = React.useState(0)
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -57,14 +53,6 @@ const TabsContainer = (props) => {
           />
         </Tabs>
       </Box>
-      <div style={{ color: '#787878', marginTop: 10 }}>
-        {' '}
-        <Checkbox
-          sx={{ '& .MuiSvgIcon-root': { fontSize: 17 } }}
-          style={{ marginLeft: 4 }}
-        />
-        <span>{SELECT_ALL_PROPERTIES}</span>
-      </div>
       <TabPanel value={value} index={0}>
         <Listings {...props} />
       </TabPanel>

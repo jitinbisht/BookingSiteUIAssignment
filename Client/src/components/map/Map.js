@@ -32,7 +32,7 @@ const Map = (props) => {
     }, [])
 
   const handleMarkerClick = (listing) => {
-    props.setSelectedListingNumber(listing.listingNumber);
+    props.setSelectedPropertyID(listing.propertyId);
   };
 
   return isLoaded ? (
@@ -42,7 +42,7 @@ const Map = (props) => {
         center={center}
         zoom={zoom}
       >
-        {props?.filteredListings?.map((listing) => {
+        {props?.filteredProperties?.map((listing) => {
           let position = {
             lat: listing.geoCode.latitude,
             lng: listing.geoCode.longitude,
@@ -55,7 +55,7 @@ const Map = (props) => {
                 onMouseOver={(e) => handleMarkerClick(listing)}
                 onMouseOut={(e) => handleMarkerClick({})}
               />
-              {props.hoveredListing.listingNumber === listing.listingNumber ? (
+              {props.hoveredProperty.listingNumber === listing.listingNumber ? (
                 <OverlayView
                   position={{
                     lat: listing.geoCode.latitude,
